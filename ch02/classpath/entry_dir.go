@@ -12,7 +12,7 @@ func newDirEntry(path string) *DirEntry {
         panic(err)
     }
 
-    return &DirEntry(absDir)
+    return &DirEntry{absDir}
 }
 
 func (self *DirEntry) readClass(className string) ([]byte, Entry, error) {

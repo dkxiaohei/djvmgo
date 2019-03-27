@@ -14,7 +14,7 @@ func newZipEntry(path string) *ZipEntry {
         panic(err)
     }
 
-    return &ZipEntry(absPath)
+    return &ZipEntry{absPath}
 }
 
 func (self *ZipEntry) readClass(className string) ([]byte, Entry, error) {
