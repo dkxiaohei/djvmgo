@@ -16,8 +16,8 @@ func newCompositeEntry(pathList string) CompositeEntry {
 	return compositeEntry
 }
 
-func (self CompositeEntry) readClass(className string) ([]byte, Entry, error) {
-	for _, entry := range self {
+func (ce CompositeEntry) readClass(className string) ([]byte, Entry, error) {
+	for _, entry := range ce {
 		if data, from, err := entry.readClass(className); err == nil {
 			return data, from, nil
 		}
@@ -26,10 +26,10 @@ func (self CompositeEntry) readClass(className string) ([]byte, Entry, error) {
 	return nil, nil, errors.New("class not found: " + className)
 }
 
-func (self CompositeEntry) String() string {
-	strs := make([]string, len(self))
+func (ce CompositeEntry) String() string {
+	strs := make([]string, len(ce))
 
-	for i, entry := range self {
+	for i, entry := range ce {
 		strs[i] = entry.String()
 	}
 

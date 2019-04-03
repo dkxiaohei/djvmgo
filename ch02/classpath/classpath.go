@@ -17,16 +17,16 @@ func Parse(jreOption, cpOption string) *Classpath {
 	return cp
 }
 
-func (self *Classpath) parseBootAndExtClasspath(jreOption string) {
+func (cp *Classpath) parseBootAndExtClasspath(jreOption string) {
 	jreDir := getJreDir(jreOption)
 
 	// jre/lib/*
 	jreLibPath := filepath.Join(jreDir, "lib", "*")
-	self.bootClasspath = newWildcardEntry(jreLibPath)
+	cp.bootClasspath = newWildcardEntry(jreLibPath)
 
 	// jre/lib/ext/*
 	jreExtPath := filepath.Join(jreDir, "lib", "ext", "*")
-	self.extClasspath = newWildcardEntry(jreExtPath)
+	cp.extClasspath = newWildcardEntry(jreExtPath)
 }
 
 func getJreDir(jreOption string) string {
@@ -55,27 +55,27 @@ func exists(path string) bool {
 	return true
 }
 
-func (self *Classpath) parseUserClasspath(cpOption string) {
+func (cp *Classpath) parseUserClasspath(cpOption string) {
 	if cpOption == "" {
 		cpOption = "."
 	}
 
-	self.userClasspath = newEntry(cpOption)
+	cp.userClasspath = newEntry(cpOption)
 }
 
-func (self *Classpath) ReadClass(className string) ([]byte, Entry, error) {
+func (cp *Classpath) ReadClass(className string) ([]byte, Entry, error) {
 	className = className + ".class"
-	if data, entry, err := self.bootClasspath.readClass(className); err == nil {
+	if data, entry, err := cp.bootClasspath.readClass(className); err == nil {
 		return data, entry, err
 	}
 
-	if data, entry, err := self.extClasspath.readClass(className); err == nil {
+	if data, entry, err := cp.extClasspath.readClass(className); err == nil {
 		return data, entry, err
 	}
 
-	return self.userClasspath.readClass(className)
+	return cp.userClasspath.readClass(className)
 }
 
-func (self *Classpath) String() string {
-	return self.userClasspath.String()
+func (cp *Classpath) String() string {
+	return cp.userClasspath.String()
 }
