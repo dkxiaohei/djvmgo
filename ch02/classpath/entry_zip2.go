@@ -62,7 +62,12 @@ func readClass(classFile *zip.File) ([]byte, error) {
 		return nil, err
 	}
 
-	defer rc.Close()
+	defer func() {
+		if err := rc.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
 	// read class data
 	data, err := ioutil.ReadAll(rc)
 	if err != nil {
